@@ -3,7 +3,7 @@ const configuration = {
   // simple constraints for defaults
   constraints: {
     video: true,
-    audio: true
+    audio: false
   },
 
   // use the public switchboard for signalling
@@ -21,7 +21,8 @@ const configuration = {
   // additionally options can be supplied to customize the data channel config
   // see: <http://w3c.github.io/webrtc-pc/#idl-def-RTCDataChannelInit>
   channels: {
-    chat: true
+    chat: true,
+    tda_chat: true
   },
 
   // the selector that will be used to identify the localvideo container
@@ -41,12 +42,13 @@ var rtc = RTC(configuration);
 
 rtc.once('connected', function() {
   console.log('we have successfully connected');
+  rtc.send('/greet', 'hello connected');
 });
 
 rtc.on('message:greet', function(text) {
-  console.log('signallerB sends greeting: ' + text);
+  console.log('##############signaller sends greeting: ' + text);
 });
 
-rtc.send('/greet', 'hello friend');
-
-module.exports = rtc;
+rtc.on('peer:connected', function(id) {
+  console.log('peer ' + id + ' has connected');
+});

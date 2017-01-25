@@ -1,0 +1,17 @@
+#l-video video, #r-video video{
+  width: 100%;
+}
+
+#l-video {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  z-index: 2;
+}
+
+.video-holder {
+  position: relative;
+  min-height: 200px;
+  width: 100%;
+}
