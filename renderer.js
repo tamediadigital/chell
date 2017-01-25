@@ -37,4 +37,16 @@ const configuration = {
   options: {}
 };
 
-module.exports = RTC(configuration);
+var rtc = RTC(configuration);
+
+rtc.once('connected', function() {
+  console.log('we have successfully connected');
+});
+
+rtc.on('message:greet', function(text) {
+  console.log('signallerB sends greeting: ' + text);
+});
+
+rtc.send('/greet', 'hello friend');
+
+module.exports = rtc;
