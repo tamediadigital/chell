@@ -22,7 +22,9 @@
     "rtc-switchboard-messenger": "^2.0.3"
   },
   "dependencies": {
+    "getusermedia": "^2.0.1",
     "rtc": "^3.4.0",
+    "rtc-captureconfig": "^4.1.0",
     "socket.io": "^1.7.2"
   }
 }

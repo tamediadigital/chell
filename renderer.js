@@ -52,3 +52,7 @@ rtc.on('message:greet', function(text) {
 rtc.on('peer:connected', function(id) {
   console.log('peer ' + id + ' has connected');
 });
+
+rtc.on('disconnected', function(id) {
+  console.log(id + ' is disconnected at the moment!');
+})

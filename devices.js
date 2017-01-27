@@ -1,10 +1,12 @@
 'use strict';
 
-var videoElement = document.querySelector('l-video');
+var videoElement;
 var audioInputSelect = document.querySelector('select#audioSource');
 var audioOutputSelect = document.querySelector('select#audioOutput');
 var videoSelect = document.querySelector('select#videoSource');
 var selectors = [audioInputSelect, audioOutputSelect, videoSelect];
+var getUserMedia = require('getusermedia');
+var capture = require('rtc-captureconfig');
 
 function gotDevices(deviceInfos) {
   // Handles being called several times to update labels. Preserve values.
@@ -69,11 +71,13 @@ function attachSinkId(element, sinkId) {
 }
 
 function changeAudioDestination() {
+  videoElement = document.getElementsByClassName('localvideo')[0];
   var audioDestination = audioOutputSelect.value;
   attachSinkId(videoElement, audioDestination);
 }
 
 function gotStream(stream) {
+  videoElement = document.getElementsByClassName('localvideo')[0];
   window.stream = stream; // make stream available to console
   videoElement.srcObject = stream;
   // Refresh button list in case labels have become available
@@ -104,4 +108,37 @@ start();
 
 function handleError(error) {
   console.log('navigator.getUserMedia error: ', error);
+}
+
+// get the sources
+MediaStreamTrack.getSources(function(sources) {
+  var constraints = capture('camera:0').toConstraints({ sources: sources });
+
+  /* here is an example of what the generated constraints actually look like
+  var constraints = {
+    audio:true,
+    video: {
+      mandatory: {},
+      optional: [
+        { sourceId: '30a3f6408175c22df739bcbf9573d841d9f99289' }
+      ]
+    }
+  };
+  */
+
+  // get user media
+  getUserMedia(constraints, function(err, stream) {
+    if (err) {
+      return console.log('Could not capture stream: ', err);
+    }
+
+    console.log('captured stream: ', stream);
+  });
+});
+
+function toggleMic(stream) { // stream is your local WebRTC stream
+  var audioTracks = stream.getAudioTracks();
+  for (var i = 0, l = audioTracks.length; i < l; i++) {
+    audioTracks[i].enabled = !audioTracks[i].enabled;
+  }
 }
