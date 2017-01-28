@@ -71,13 +71,13 @@ function attachSinkId(element, sinkId) {
 }
 
 function changeAudioDestination() {
-  videoElement = document.getElementsByClassName('localvideo')[0];
+  videoElement = document.getElementById('l-video');
   var audioDestination = audioOutputSelect.value;
   attachSinkId(videoElement, audioDestination);
 }
 
 function gotStream(stream) {
-  videoElement = document.getElementsByClassName('localvideo')[0];
+  videoElement = document.getElementById('l-video');
   window.stream = stream; // make stream available to console
   videoElement.srcObject = stream;
   // Refresh button list in case labels have become available
