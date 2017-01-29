@@ -1,0 +1,17 @@
+.lVideo video{
+  width: 100%;
+}
+
+.lVideo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  z-index: 2;
+}
+
+.videoHolder {
+  position: relative;
+  min-height: 200px;
+  width: 100%;
+}
