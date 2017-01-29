@@ -1,12 +1,16 @@
 // @flow
 import React, { Component } from 'react';
+import RTC from 'rtc';
 import styles from './VideoLink.css';
 import rtc from '../../actions/rtc';
 
 
 export default class VideoLink extends Component {
+  componentDidMount() {
+    RTC(rtc.configuration);
+  }
+
   render() {
-    console.log(rtc);
     return (
       <div>
         <div className={styles.container}>
