@@ -4,8 +4,15 @@ import RTC from 'rtc';
 import styles from './VideoLink.css';
 import rtc from '../../actions/rtc';
 
+type Props = { muted: boolean };
+type DefaultProps = { muted: boolean };
+type State = { muted: boolean };
 
-export default class VideoLink extends Component {
+export default class VideoLink extends Component<Props, DefaultProps, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { muted: props.muted };
+  }
   componentDidMount() {
     RTC(rtc.configuration);
   }
@@ -27,3 +34,5 @@ export default class VideoLink extends Component {
     );
   }
 }
+VideoLink.propTypes = { muted: React.PropTypes.bool };
+VideoLink.defaultProps = { muted: false };
