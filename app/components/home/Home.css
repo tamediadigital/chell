@@ -5,3 +5,27 @@
 .container a {
   font-size: 1.4rem;
 }
+
+button {
+  padding: 5px 15px;
+  border: solid white 1px;
+  background: #2de615;
+  color: white;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 1px 20px;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: rgba(45,230,21,0.9);
+}
+
+input[type="text"]{
+  padding: 7px;
+  font-size: 16px;
+  width: 200px;
+  border: 1px solid white;
+  border-radius: 5px;
+}
