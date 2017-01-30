@@ -60,11 +60,13 @@ class VideoLink extends Component<Props, DefaultProps, State> {
   render() {
     return (
       <div className={styles.videoHolder}>
+        {/*
         <div className={styles.backButton}>
           <Link to="/">
             <i className="fa fa-arrow-left fa-3x" />
           </Link>
         </div>
+        */}
         <br />
         <div id="r-video" className={styles.rVideo} />
         <div id="l-video" className={styles.lVideo} />
