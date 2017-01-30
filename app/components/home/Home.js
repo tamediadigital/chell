@@ -2,15 +2,22 @@
 import React, { Component } from 'react';
 import styles from './Home.css';
 
-type Props = { roomName: string };
-type DefaultProps = { roomName: string };
-type State = { roomName: string };
+type Props = { roomName: string, recentlyVisitedList: string };
+type DefaultProps = { roomName: string, recentlyVisitedList: string };
+type State = { roomName: string, recentlyVisitedList: string };
 
 export default class Home extends Component<Props, DefaultProps, State> {
   constructor(props) {
     super(props);
-    this.state = { roomName: '' };
+    this.state = { roomName: '', recentlyVisitedList: '' };
 
+    const recentlyVisited = localStorage.getItem('recentlyVisited');
+    if (recentlyVisited) {
+      const items = JSON.parse(recentlyVisited);
+      this.state.recentlyVisitedList = items.items.map((item) =>
+        <li key={item.time}>{item.room} <i>at</i> {item.time}</li>
+      );
+    }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -47,7 +54,7 @@ export default class Home extends Component<Props, DefaultProps, State> {
         </h1>
         <br />
         <h3>
-          Enter chat room name you want to join or create
+          Enter chat room name You want to join or create
         </h3>
         <form onSubmit={this.handleSubmit}>
           <input type="text" value={this.state.roomName} onChange={this.handleChange} />
@@ -55,6 +62,13 @@ export default class Home extends Component<Props, DefaultProps, State> {
             Join
           </button>
         </form>
+        <h4>
+          Recently visited rooms:
+
+          <ul>
+            {this.state.recentlyVisitedList}
+          </ul>
+        </h4>
       </div>
     );
   }
