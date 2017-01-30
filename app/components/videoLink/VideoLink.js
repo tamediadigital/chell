@@ -43,7 +43,16 @@ class VideoLink extends Component<Props, DefaultProps, State> {
     }
 
     localStorage.setItem('lastVisited', JSON.stringify(lastVisited));
+
+    {/*
+    window.navigator.mediaDevices.getUserMedia({ video: true }).then(gotMedia).catch(error => console.error('getUserMedia() error:', error));
+
+    const mediaStreamTrack = mediaStream.getVideoTracks()[0];
+    mediaStreamTrack.stop();
+    mediaStreamTrack.enabled = false;
+    }
   }
+  */}
 
   toggleMute() {
     this.setState(prevState => ({
