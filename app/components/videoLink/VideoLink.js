@@ -1,19 +1,21 @@
 // @flow
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import RTC from 'rtc';
 import styles from './VideoLink.css';
 import rtc from '../../actions/rtc';
 
-type Props = { muted: boolean, micOptions: Array<string> };
-type DefaultProps = { muted: boolean, micOptions: Array<string> };
-type State = { muted: boolean, micOptions: Array<string> };
+type Props = { muted: boolean, micOptions: Array<string>, roomName: string };
+type DefaultProps = { muted: boolean, micOptions: Array<string>, roomName: string };
+type State = { muted: boolean, micOptions: Array<string>, roomName: string };
 
-export default class VideoLink extends Component<Props, DefaultProps, State> {
+class VideoLink extends Component<Props, DefaultProps, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       muted: props.muted,
-      micOptions: props.micOptions
+      micOptions: props.micOptions,
+      roomName: props.roomName
     };
 
     this.toggleMute = this.toggleMute.bind(this);
@@ -23,6 +25,7 @@ export default class VideoLink extends Component<Props, DefaultProps, State> {
   }
 
   componentDidMount() {
+    rtc.configuration.room = this.props.location.query.roomName;
     RTC(rtc.configuration);
   }
 
@@ -41,25 +44,24 @@ export default class VideoLink extends Component<Props, DefaultProps, State> {
   render() {
     return (
       <div className={styles.videoHolder}>
+        <div className={styles.backButton}>
+          <Link to="/">
+            <i className="fa fa-arrow-left fa-3x" />
+          </Link>
+        </div>
+        <br />
         <div id="r-video" className={styles.rVideo} />
         <div id="l-video" className={styles.lVideo} />
-
-        {/*
-        <select name="" id="audioSource">
-          {this.micSelect}
-         </select>
-         <select name="" id="videoSource" />
-
-        <button onClick={this.toggleMute}>
-          {this.state.muted ? 'UNMUTE' : 'MUTE'}
-        </button>
-        */}
       </div>
     );
   }
 }
+
 VideoLink.propTypes = {
   muted: React.PropTypes.bool,
-  micOptions: React.PropTypes.instanceOf(Array)
+  micOptions: React.PropTypes.instanceOf(Array),
+  roomName: React.PropTypes.string
 };
-VideoLink.defaultProps = { muted: false, micOptions: ['opt 1', 'opt 2', 'opt 3'] };
+VideoLink.defaultProps = { muted: false, micOptions: ['opt 1', 'opt 2', 'opt 3'], roomName: '' };
+
+export default VideoLink;

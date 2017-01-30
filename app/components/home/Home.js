@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import styles from './Home.css';
 
 type Props = { roomName: string, recentlyVisitedList: string };
@@ -39,7 +40,10 @@ export default class Home extends Component<Props, DefaultProps, State> {
 
     localStorage.setItem('lastVisited', JSON.stringify(lastVisited));
     console.log('A room name was submitted: ' + this.state.roomName);
-    event.preventDefault();
+
+    if (this.state.roomName !== '') {
+      console.log('New room name set!');
+    }
   }
 
   handleChange(event) {
@@ -57,18 +61,21 @@ export default class Home extends Component<Props, DefaultProps, State> {
           Enter chat room name You want to join or create
         </h3>
         <form onSubmit={this.handleSubmit}>
-          <input type="text" value={this.state.roomName} onChange={this.handleChange} />
-          <button type="submit">
-            Join
-          </button>
+          <input type="text" value={this.state.roomName} onChange={this.handleChange} required />
+
+          <Link to={{ pathname: '/videoLink', query: { roomName: this.state.roomName } }}>
+            <button type="submit">
+                Join
+            </button>
+          </Link>
         </form>
-        <h4>
+        {/*<h4>
           Recently visited rooms:
 
           <ul>
             {this.state.recentlyVisitedList}
           </ul>
-        </h4>
+        </h4>*/}
       </div>
     );
   }

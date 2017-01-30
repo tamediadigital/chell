@@ -11,7 +11,7 @@ const configuration = {
 
   // no room is defined by default
   // rtc-quickconnect will autogenerate using a location.hash
-  room: 'TDA_CHAT_ROOM',
+  room: '',
 
   // specify ice servers or a generator function to create ice servers
   ice: [],
