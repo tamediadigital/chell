@@ -1,0 +1,37 @@
+.container {
+  text-align: center;
+}
+
+.container h2 {
+  font-size: 5rem;
+}
+
+.container a {
+  font-size: 1.4rem;
+  opacity: 1;
+}
+
+button {
+  padding: 5px 15px;
+  border: solid white 1px;
+  background: #2de615;
+  color: white;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 1px;
+  margin-left: 20px;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: rgba(45,230,21,0.9);
+}
+
+input[type="text"]{
+  padding: 7px;
+  font-size: 16px;
+  width: 320px;
+  border: 1px solid white;
+  border-radius: 5px;
+}
