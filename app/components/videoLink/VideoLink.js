@@ -27,6 +27,22 @@ class VideoLink extends Component<Props, DefaultProps, State> {
   componentDidMount() {
     rtc.configuration.room = this.props.location.query.roomName;
     RTC(rtc.configuration);
+
+    const lastVisited = {
+      time: new Date(),
+      room: this.props.location.query.roomName
+    };
+    let recentlyVisited = localStorage.getItem('recentlyVisited');
+    if (recentlyVisited) {
+      const items = JSON.parse(recentlyVisited);
+      items.items.push(lastVisited);
+      localStorage.setItem('recentlyVisited', JSON.stringify(items));
+    } else {
+      recentlyVisited = { items: [lastVisited] };
+      localStorage.setItem('recentlyVisited', JSON.stringify(recentlyVisited));
+    }
+
+    localStorage.setItem('lastVisited', JSON.stringify(lastVisited));
   }
 
   toggleMute() {
