@@ -18,7 +18,6 @@ class VideoLink extends Component<Props, DefaultProps, State> {
 
     this.toggleMute = this.toggleMute.bind(this);
     this.goBack = this.goBack.bind(this);
-    this.optionsGenerator = this.optionsGenerator.bind(this);
   }
 
   componentDidMount() {
@@ -32,7 +31,6 @@ class VideoLink extends Component<Props, DefaultProps, State> {
     }
 
     let recentlyVisited = localStorage.getItem('recentlyVisited');
-
 
     if (recentlyVisited) {
       const items = JSON.parse(recentlyVisited);
@@ -60,12 +58,6 @@ class VideoLink extends Component<Props, DefaultProps, State> {
     this.setState(prevState => ({
       muted: !prevState.muted
     }));
-  }
-
-  optionsGenerator(arr) {
-    return arr.map((number) =>
-      <option key={number} value={number}>{number}</option>
-    );
   }
 
   goBack() {

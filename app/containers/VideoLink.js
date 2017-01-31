@@ -5,7 +5,7 @@ import * as VideoLinkActions from '../actions/rtc';
 
 function mapStateToProps(state) {
   return {
-    counter: state.counter
+    videoLink: state.videoLink
   };
 }
 
