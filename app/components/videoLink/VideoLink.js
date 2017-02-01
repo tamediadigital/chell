@@ -51,7 +51,24 @@ class VideoLink extends Component<Props, DefaultProps, State> {
     }*/
 
     rtc.configuration.room = lastVisited.room;
-    RTC(rtc.configuration);
+    const RTCobj = RTC(rtc.configuration);
+
+    RTCobj.once('connected', () => {
+      console.log('we have successfully connected');
+      RTCobj.send('/greet', 'hello connected');
+    });
+
+    RTCobj.on('message:greet', (text) => {
+      console.log('##############signaller sends greeting: ', text);
+    });
+
+    RTCobj.on('peer:connected', (id) => {
+      console.log('peer ', id, ' has connected');
+    });
+
+    RTCobj.on('disconnected', (id) => {
+      console.log(id, ' is disconnected at the moment!');
+    });
   }
 
   toggleMute() {
