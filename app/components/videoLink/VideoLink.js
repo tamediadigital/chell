@@ -69,11 +69,10 @@ class VideoLink extends Component<Props, DefaultProps, State> {
     return (
       <div className={styles.videoHolder}>
         <div className={styles.backButton}>
-          <a onClick={this.goBack}>
+          <a onClick={this.goBack} className={styles.goBack}>
             <i className="fa fa-arrow-left fa-3x" />
           </a>
         </div>
-        <br />
         <div id="r-video" className={styles.rVideo} />
         <div id="l-video" className={styles.lVideo} />
       </div>

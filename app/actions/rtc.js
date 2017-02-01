@@ -2,7 +2,7 @@
 const configuration = {
   // simple constraints for defaults
   constraints: {
-    video: true,
+    video: { width: { min: 1280 }, height: { min: 720 } },
     audio: true
   },
 
