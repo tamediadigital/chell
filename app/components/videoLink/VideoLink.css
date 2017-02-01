@@ -15,3 +15,9 @@
   min-height: 200px;
   width: 100%;
 }
+
+.rVideo {
+  width: 100%;
+  display: table;
+  text-align: center;
+}
