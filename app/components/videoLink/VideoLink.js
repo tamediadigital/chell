@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import RTC from 'rtc';
 import styles from './VideoLink.css';
