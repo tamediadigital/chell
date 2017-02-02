@@ -6,9 +6,11 @@ import createLogger from 'redux-logger';
 import rootReducer from '../reducers';
 
 import * as counterActions from '../actions/counter';
+import * as videoActions from '../actions/video';
 import type { counterStateType } from '../reducers/counter';
 
 const actionCreators = {
+  ...videoActions,
   ...counterActions,
   push,
 };

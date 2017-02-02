@@ -2,10 +2,23 @@
   width: 100%;
 }
 
-.lVideo {
+.goBack {
   position: absolute;
-  bottom: 0;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+}
+
+.muteButton {
+  position: absolute;
+  top: 70px;
   left: 0;
+}
+
+.lVideo {
+  position: fixed;
+  bottom: 5px;
+  left: 10px;
   width: 200px;
   z-index: 2;
 }
@@ -14,4 +27,15 @@
   position: relative;
   min-height: 200px;
   width: 100%;
+}
+
+.rVideo {
+  width: 100%;
+  display: table;
+  text-align: center;
+  padding-top: 10%;
+}
+
+.rVideo video {
+  width: 50%;
 }

@@ -1,38 +1,38 @@
 // @flow
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import RTC from 'rtc';
 import styles from './VideoLink.css';
 import rtc from '../../actions/rtc';
 
-type Props = { muted: boolean, micOptions: Array<string>, roomName: string };
-type DefaultProps = { muted: boolean, micOptions: Array<string>, roomName: string };
-type State = { muted: boolean, micOptions: Array<string>, roomName: string };
+type Props = { mute: boolean, roomName: string };
+type DefaultProps = { mute: boolean, roomName: string };
+type State = { mute: boolean, roomName: string };
+
+let RTCobj = {};
 
 class VideoLink extends Component<Props, DefaultProps, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      muted: props.muted,
-      micOptions: props.micOptions,
+      mute: props.mute,
       roomName: props.roomName
     };
 
-    this.toggleMute = this.toggleMute.bind(this);
-    this.optionsGenerator = this.optionsGenerator.bind(this);
-
-    this.micSelect = this.optionsGenerator(this.state.micOptions);
+    this.goBack = this.goBack.bind(this);
   }
 
   componentDidMount() {
-    rtc.configuration.room = this.props.location.query.roomName;
-    RTC(rtc.configuration);
-
     const lastVisited = {
       time: new Date(),
       room: this.props.location.query.roomName
     };
+
+    if (localStorage.getItem('lastVisited')) {//In case of app restart, recover room name from localStorage
+      lastVisited.room = JSON.parse(localStorage.getItem('lastVisited')).room;
+    }
+
     let recentlyVisited = localStorage.getItem('recentlyVisited');
+
     if (recentlyVisited) {
       const items = JSON.parse(recentlyVisited);
       items.items.push(lastVisited);
@@ -44,35 +44,72 @@ class VideoLink extends Component<Props, DefaultProps, State> {
 
     localStorage.setItem('lastVisited', JSON.stringify(lastVisited));
 
-    /* window.navigator.mediaDevices.getUserMedia({ video: true }).then(gotMedia).catch(error => console.error('getUserMedia() error:', error));
+    /*
+    var audioContext = new AudioContext();
+    var gain = audioContext.createGain();
+    window.navigator.mediaDevices.getUserMedia({ audio: true }).then(gotMedia).catch(error => console.error('getUserMedia() error:', error));
+    function gotMedia(stream){
+      var sourceStream = audioContext.createMediaStreamSource(stream);
+      sourceStream.connect(gain);
+      gain.connect(audioContext.destination);
+      gain.value = 0;
+    }
 
-    const mediaStreamTrack = mediaStream.getVideoTracks()[0];
-    mediaStreamTrack.stop();
-    mediaStreamTrack.enabled = false;
-    }*/
+    var localStream = stream.getAudioTracks();
+    localStream[0].enabled = false;
+    localStream[0].stop();
+    return localStream[0];
+
+    */
+
+    rtc.configuration.room = lastVisited.room;
+    RTCobj = RTC(rtc.configuration);
+
+    RTCobj.once('connected', () => {
+      console.log('we have successfully connected');
+      RTCobj.send('/greet', 'hello connected');
+    });
+
+    RTCobj.on('message:greet', (text) => {
+      console.log('##############signaller sends greeting: ', text);
+    });
+
+    RTCobj.on('message:command', (data, id) => {
+      let video = document.querySelectorAll('[data-peer=' + id.id + ']')[0];
+      console.log(video);
+      video.volume = video.volume ? 0 : 1;
+    });
+
+    RTCobj.on('peer:connected', (id) => {
+      console.log('peer ', id, ' has connected');
+    });
+
+    RTCobj.on('disconnected', (id) => {
+      console.log(id, ' is disconnected at the moment!');
+    });
   }
 
-  toggleMute() {
-    this.setState(prevState => ({
-      muted: !prevState.muted
-    }));
+  goBack() {
+    window.localStorage.removeItem('lastVisited');
+    this.props.history.push({}, '/');
   }
 
-  optionsGenerator(arr) {
-    return arr.map((number) =>
-      <option key={number} value={number}>{number}</option>
-    );
+  props: {
+    toggleMute: () => void
   }
 
   render() {
+    const { toggleMute } = this.props;
     return (
       <div className={styles.videoHolder}>
         <div className={styles.backButton}>
-          <Link to="/">
+          <a onClick={this.goBack} className={styles.goBack}>
             <i className="fa fa-arrow-left fa-3x" />
-          </Link>
+          </a>
+          <button onClick={() => toggleMute(RTCobj)} className={styles.muteButton}>
+            {this.state.mute ? 'Unmute' : 'Mute'}
+          </button>
         </div>
-        <br />
         <div id="r-video" className={styles.rVideo} />
         <div id="l-video" className={styles.lVideo} />
       </div>
@@ -81,10 +118,9 @@ class VideoLink extends Component<Props, DefaultProps, State> {
 }
 
 VideoLink.propTypes = {
-  muted: React.PropTypes.bool,
-  micOptions: React.PropTypes.instanceOf(Array),
+  mute: React.PropTypes.bool,
   roomName: React.PropTypes.string
 };
-VideoLink.defaultProps = { muted: false, micOptions: ['opt 1', 'opt 2', 'opt 3'], roomName: '' };
+VideoLink.defaultProps = { mute: false, roomName: '' };
 
 export default VideoLink;
