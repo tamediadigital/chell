@@ -4,19 +4,20 @@ import RTC from 'rtc';
 import styles from './VideoLink.css';
 import rtc from '../../actions/rtc';
 
-type Props = { muted: boolean, roomName: string };
-type DefaultProps = { muted: boolean, roomName: string };
-type State = { muted: boolean, roomName: string };
+type Props = { mute: boolean, roomName: string };
+type DefaultProps = { mute: boolean, roomName: string };
+type State = { mute: boolean, roomName: string };
+
+let RTCobj = {};
 
 class VideoLink extends Component<Props, DefaultProps, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      muted: props.muted,
+      mute: props.mute,
       roomName: props.roomName
     };
 
-    this.toggleMute = this.toggleMute.bind(this);
     this.goBack = this.goBack.bind(this);
   }
 
@@ -43,15 +44,26 @@ class VideoLink extends Component<Props, DefaultProps, State> {
 
     localStorage.setItem('lastVisited', JSON.stringify(lastVisited));
 
-    /* window.navigator.mediaDevices.getUserMedia({ video: true }).then(gotMedia).catch(error => console.error('getUserMedia() error:', error));
+    /*
+    var audioContext = new AudioContext();
+    var gain = audioContext.createGain();
+    window.navigator.mediaDevices.getUserMedia({ audio: true }).then(gotMedia).catch(error => console.error('getUserMedia() error:', error));
+    function gotMedia(stream){
+      var sourceStream = audioContext.createMediaStreamSource(stream);
+      sourceStream.connect(gain);
+      gain.connect(audioContext.destination);
+      gain.value = 0;
+    }
 
-    const mediaStreamTrack = mediaStream.getVideoTracks()[0];
-    mediaStreamTrack.stop();
-    mediaStreamTrack.enabled = false;
-    }*/
+    var localStream = stream.getAudioTracks();
+    localStream[0].enabled = false;
+    localStream[0].stop();
+    return localStream[0];
+
+    */
 
     rtc.configuration.room = lastVisited.room;
-    const RTCobj = RTC(rtc.configuration);
+    RTCobj = RTC(rtc.configuration);
 
     RTCobj.once('connected', () => {
       console.log('we have successfully connected');
@@ -60,6 +72,12 @@ class VideoLink extends Component<Props, DefaultProps, State> {
 
     RTCobj.on('message:greet', (text) => {
       console.log('##############signaller sends greeting: ', text);
+    });
+
+    RTCobj.on('message:command', (data, id) => {
+      let video = document.querySelectorAll('[data-peer=' + id.id + ']')[0];
+      console.log(video);
+      video.volume = video.volume ? 0 : 1;
     });
 
     RTCobj.on('peer:connected', (id) => {
@@ -71,24 +89,26 @@ class VideoLink extends Component<Props, DefaultProps, State> {
     });
   }
 
-  toggleMute() {
-    this.setState(prevState => ({
-      muted: !prevState.muted
-    }));
-  }
-
   goBack() {
     window.localStorage.removeItem('lastVisited');
     this.props.history.push({}, '/');
   }
 
+  props: {
+    toggleMute: () => void
+  }
+
   render() {
+    const { toggleMute } = this.props;
     return (
       <div className={styles.videoHolder}>
         <div className={styles.backButton}>
           <a onClick={this.goBack} className={styles.goBack}>
             <i className="fa fa-arrow-left fa-3x" />
           </a>
+          <button onClick={() => toggleMute(RTCobj)} className={styles.muteButton}>
+            {this.state.mute ? 'Unmute' : 'Mute'}
+          </button>
         </div>
         <div id="r-video" className={styles.rVideo} />
         <div id="l-video" className={styles.lVideo} />
@@ -98,9 +118,9 @@ class VideoLink extends Component<Props, DefaultProps, State> {
 }
 
 VideoLink.propTypes = {
-  muted: React.PropTypes.bool,
+  mute: React.PropTypes.bool,
   roomName: React.PropTypes.string
 };
-VideoLink.defaultProps = { muted: false, roomName: '' };
+VideoLink.defaultProps = { mute: false, roomName: '' };
 
 export default VideoLink;

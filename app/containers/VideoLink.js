@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import VideoLink from '../components/videoLink/VideoLink';
-import * as VideoLinkActions from '../actions/rtc';
+import * as VideoLinkActions from '../actions/video';
 
 function mapStateToProps(state) {
   return {
