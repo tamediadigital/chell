@@ -3,9 +3,9 @@ import RTC from 'rtc';
 import styles from './VideoLink.css';
 import rtc from '../../actions/rtc';
 
-type Props = { mute: boolean, roomName: string, history: string, location: string };
-type DefaultProps = { mute: boolean, roomName: string, history: string, location: string };
-type State = { mute: boolean, roomName: string, history: string, location: string };
+type Props = { mute: boolean, roomName: string };
+type DefaultProps = { mute: boolean, roomName: string };
+type State = { mute: boolean, roomName: string };
 
 let RTCobj = {};
 
