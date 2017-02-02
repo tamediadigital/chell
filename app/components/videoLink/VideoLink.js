@@ -3,9 +3,9 @@ import RTC from 'rtc';
 import styles from './VideoLink.css';
 import rtc from '../../actions/rtc';
 
-type Props = { mute: boolean, roomName: string };
-type DefaultProps = { mute: boolean, roomName: string };
-type State = { mute: boolean, roomName: string };
+type Props = { mute: boolean, roomName: string, history: string, location: string };
+type DefaultProps = { mute: boolean, roomName: string, history: string, location: string };
+type State = { mute: boolean, roomName: string, history: string, location: string };
 
 let RTCobj = {};
 
@@ -26,7 +26,7 @@ class VideoLink extends Component<Props, DefaultProps, State> {
       room: this.props.location.query.roomName
     };
 
-    if (localStorage.getItem('lastVisited')) {//In case of app restart, recover room name from localStorage
+    if (localStorage.getItem('lastVisited')) { // In case of app restart, recover room name from localStorage
       lastVisited.room = JSON.parse(localStorage.getItem('lastVisited')).room;
     }
 
@@ -46,7 +46,8 @@ class VideoLink extends Component<Props, DefaultProps, State> {
     /*
     var audioContext = new AudioContext();
     var gain = audioContext.createGain();
-    window.navigator.mediaDevices.getUserMedia({ audio: true }).then(gotMedia).catch(error => console.error('getUserMedia() error:', error));
+    window.navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(gotMedia).catch(error => console.error('getUserMedia() error:', error));
     function gotMedia(stream){
       var sourceStream = audioContext.createMediaStreamSource(stream);
       sourceStream.connect(gain);
@@ -74,7 +75,7 @@ class VideoLink extends Component<Props, DefaultProps, State> {
     });
 
     RTCobj.on('message:command', (data, id) => {
-      let video = document.querySelectorAll('[data-peer=' + id.id + ']')[0];
+      const video = document.querySelectorAll('[data-peer=' + id.id + ']')[0];
       console.log(video);
       video.volume = video.volume ? 0 : 1;
     });
@@ -102,9 +103,9 @@ class VideoLink extends Component<Props, DefaultProps, State> {
     return (
       <div className={styles.videoHolder}>
         <div className={styles.backButton}>
-          <a onClick={this.goBack} className={styles.goBack}>
+          <button onClick={this.goBack} className={styles.goBack}>
             <i className="fa fa-arrow-left fa-3x" />
-          </a>
+          </button>
           <button onClick={() => toggleMute(RTCobj)} className={styles.muteButton}>
             {this.state.mute ? 'Unmute' : 'Mute'}
           </button>

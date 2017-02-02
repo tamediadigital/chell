@@ -13,7 +13,7 @@ export default function toggleMute(state: boolean = true, action: actionType) {
   switch (action.type) {
     case TOGGLE_MUTE:
       action.rtc.send('/command', 'This is a custom command!!');
-      return true
+      return true;
     default:
       return state;
   }
