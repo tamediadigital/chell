@@ -14,6 +14,7 @@
   position: absolute;
   top: 90px;
   left: 0;
+  z-index: 2;
 }
 
 .lVideo {
@@ -39,4 +40,12 @@
 
 .rVideo video {
   width: 50%;
+}
+
+.rVideo.single {
+  padding-top: 0;
+}
+
+.rVideo.single video{
+  width: 100%;
 }

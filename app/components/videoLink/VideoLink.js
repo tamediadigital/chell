@@ -3,9 +3,9 @@ import RTC from 'rtc';
 import styles from './VideoLink.css';
 import rtc from '../../actions/rtc';
 
-type Props = { mute: boolean, roomName: string };
-type DefaultProps = { mute: boolean, roomName: string };
-type State = { mute: boolean, roomName: string };
+type Props = { mute: boolean, roomName: string, peersCount: number };
+type DefaultProps = { mute: boolean, roomName: string, peersCount: number };
+type State = { mute: boolean, roomName: string, peersCount: number };
 
 let RTCobj = {};
 
@@ -14,7 +14,8 @@ class VideoLink extends Component<Props, DefaultProps, State> {
     super(props);
     this.state = {
       mute: props.mute,
-      roomName: props.roomName
+      roomName: props.roomName,
+      peersCount: props.peersCount
     };
 
     this.goBack = this.goBack.bind(this);
@@ -110,7 +111,7 @@ class VideoLink extends Component<Props, DefaultProps, State> {
             {this.state.mute ? 'Unmute' : 'Mute'}
           </button>
         </div>
-        <div id="r-video" className={styles.rVideo} />
+        <div id="r-video" className={styles.rVideo + ' ' + (this.props.peersCount > 1 ? styles.multi : styles.single)} />
         <div id="l-video" className={styles.lVideo} />
       </div>
     );
@@ -119,8 +120,9 @@ class VideoLink extends Component<Props, DefaultProps, State> {
 
 VideoLink.propTypes = {
   mute: React.PropTypes.bool,
-  roomName: React.PropTypes.string
+  roomName: React.PropTypes.string,
+  peersCount: React.PropTypes.number
 };
-VideoLink.defaultProps = { mute: false, roomName: '' };
+VideoLink.defaultProps = { mute: false, roomName: '', peersCount: 1 };
 
 export default VideoLink;
