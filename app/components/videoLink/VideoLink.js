@@ -83,6 +83,9 @@ class VideoLink extends Component<Props, DefaultProps, State> {
 
     RTCobj.on('peer:connected', (id) => {
       console.log('peer ', id, ' has connected');
+      this.setState({
+        peersCount: this.state.peersCount + 1
+      });
     });
 
     RTCobj.on('disconnected', (id) => {
@@ -108,10 +111,10 @@ class VideoLink extends Component<Props, DefaultProps, State> {
             <i className="fa fa-arrow-left fa-3x" />
           </button>
           <button onClick={() => toggleMute(RTCobj)} className={styles.muteButton}>
-            {this.state.mute ? 'Unmute' : 'Mute'}
+            {this.state.mute ? 'Unmute mic' : 'Mute mic'}
           </button>
         </div>
-        <div id="r-video" className={styles.rVideo + ' ' + (this.props.peersCount > 1 ? styles.multi : styles.single)} />
+        <div id="r-video" className={styles.rVideo + ' ' + (this.state.peersCount > 1 ? styles.multi : styles.single)} />
         <div id="l-video" className={styles.lVideo} />
       </div>
     );
