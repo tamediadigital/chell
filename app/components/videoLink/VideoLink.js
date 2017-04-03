@@ -3,10 +3,6 @@ import RTC from 'rtc';
 import styles from './VideoLink.css';
 import rtc from '../../actions/rtc';
 
-type Props = { mute: boolean, roomName: string, peersCount: number };
-type DefaultProps = { mute: boolean, roomName: string, peersCount: number };
-type State = { mute: boolean, roomName: string, peersCount: number };
-
 let RTCobj = {};
 
 class VideoLink extends Component<Props, DefaultProps, State> {
@@ -124,8 +120,16 @@ class VideoLink extends Component<Props, DefaultProps, State> {
 VideoLink.propTypes = {
   mute: React.PropTypes.bool,
   roomName: React.PropTypes.string,
-  peersCount: React.PropTypes.number
+  peersCount: React.PropTypes.number,
+  location: React.PropTypes.obj,
+  history: React.PropTypes.obj
 };
-VideoLink.defaultProps = { mute: false, roomName: '', peersCount: 1 };
+VideoLink.defaultProps = {
+  mute: false,
+  roomName: '',
+  peersCount: 1,
+  location: {},
+  history: {}
+};
 
 export default VideoLink;
