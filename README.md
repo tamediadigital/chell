@@ -38,6 +38,8 @@ or run two servers with one command
 $ npm run dev
 ```
 
+NOTE: make sure you have nothing running on port 3000
+
 ## Editor Configuration
 **Atom**
 ```bash
