@@ -7,7 +7,7 @@ const configuration = {
   },
 
   // use the public switchboard for signalling
-  signaller: 'https://switchboard.rtc.io',
+  signaller: 'https://switchboard.dev.tda.link/',
 
   // no room is defined by default
   // rtc-quickconnect will autogenerate using a location.hash
