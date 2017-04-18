@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import RTC from 'rtc';
 import styles from './VideoLink.css';
 import rtc from '../../actions/rtc';
 
 let RTCobj = {};
 
-class VideoLink extends Component<Props, DefaultProps, State> {
-  constructor(props: Props) {
+class VideoLink extends Component {
+  constructor(props) {
     super(props);
     this.state = {
       mute: props.mute,
@@ -121,8 +121,8 @@ VideoLink.propTypes = {
   mute: React.PropTypes.bool,
   roomName: React.PropTypes.string,
   peersCount: React.PropTypes.number,
-  location: React.PropTypes.obj,
-  history: React.PropTypes.obj
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 VideoLink.defaultProps = {
   mute: false,
