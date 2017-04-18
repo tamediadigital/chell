@@ -1,29 +1,27 @@
-// @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styles from './Home.css';
 
-type Props = { roomName: string, recentlyVisitedList: string };
-type DefaultProps = { roomName: string, recentlyVisitedList: string };
-type State = { roomName: string, recentlyVisitedList: string };
-
-export default class Home extends Component<Props, DefaultProps, State> {
+export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { roomName: '', recentlyVisitedList: '' };
+    this.state = {
+      roomName: '',
+      recentlyVisitedList: ''
+    };
 
     const recentlyVisited = localStorage.getItem('recentlyVisited');
     if (recentlyVisited) {
       const items = JSON.parse(recentlyVisited);
-      this.state.recentlyVisitedList = items.items.map((item) =>
-        <li key={item.time}>{item.room} <i>at</i> {item.time}</li>
-      );
+      this.state.recentlyVisitedList = items.items.map((item) => {
+        return <li key={item.time}>{item.room} <i>at</i> {item.time}</li>;
+      });
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleSubmit(event) {
+  handleSubmit() {
     console.log('A room name was submitted: ' + this.state.roomName);
 
     if (this.state.roomName !== '') {

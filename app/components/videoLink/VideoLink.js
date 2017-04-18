@@ -106,7 +106,7 @@ class VideoLink extends Component {
           <button onClick={this.goBack} className={styles.goBack}>
             <i className="fa fa-arrow-left fa-3x" />
           </button>
-          <button onClick={() => toggleMute(RTCobj)} className={styles.muteButton}>
+          <button className={styles.muteButton} onClick={() => { toggleMute(RTCobj); }}>
             {this.state.mute ? 'Unmute mic' : 'Mute mic'}
           </button>
         </div>
